@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Paper Scissors</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1 class="center" tabindex="0">Rock Paper Scissor</h1>
+    <a href="#p1msg" class="skip-link">Skip Scoreboard</a>
+
+    <section class="scoreBoard" id="scoreBoard">
+      <h2 class="offscreen">Scoreboard</h2>
+      <section id="all_time" class="scoreBoard__section">
+        <h3 class="offscreen">All Time Scoreboard</h3>
+        <div class="scoreBoard__header" aria-hidden="true">
+          <p><abbr title="Player One">P1</abbr></p>
+          <p>All Time</p>
+          <p><abbr title="Computer Player">CP</abbr></p>
+        </div>
+        <div class="scoreBoard__row" role="row">
+          <div id="p1_all_time_score" class="scoreBoard__score center" role="cell" aria-label="Player One All Time Wins" tabindex="0">0</div>
+          <div id="cp_all_time_score" class="scoreBoard__score center" role="cell" aria-label="Computer Player All Time Wins" tabindex="0">0</div>
+        </div>
+      </section>
+      <section id="session" class="scoreBoard__section">
+        <h3 class="offscreen">Session Scoreboard</h3>
+        <div class="scoreBoard__header" aria-hidden="true">
+          <p><abbr title="Player One">P1</abbr></p>
+          <p>Session</p>
+          <p><abbr title="Computer Player">CP</abbr></p>
+        </div>
+        <div class="scoreBoard__row" role="row">
+          <div id="p1_session_score" class="scoreBoard__score center" role="cell" aria-label="Player One Wins This Session" tabindex="0">0</div>
+          <div id="cp_session_score" class="scoreBoard__score center" role="cell" aria-label="Computer Player Wins This Session" tabindex="0">0</div>
+        </div>
+      </section>
+    </section>
+    <section class="playerBoard" id="playerBoard"></section>
+    <section class="computerBoard" id="computerBoard"></section>
+
+    <form>
+      <button id="playAgain" type="submit" class="playAgain hidden">Play Again?</button>
+    </form>
+  </main>
+</body>
+</html>
