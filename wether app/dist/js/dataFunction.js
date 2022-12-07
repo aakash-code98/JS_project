@@ -1,3 +1,5 @@
+const WEATHER_API_KEY = "36996082b1f3b4ba81534c31a4e2ad2e";
+
 export const setLocationObject = (locationObj, coordsObj) => {
   const { lat, lon, name, unit } = coordsObj;
   locationObj.setLat(lat);
@@ -10,6 +12,34 @@ export const setLocationObject = (locationObj, coordsObj) => {
 
 export const getHomeLocation = () => {
   return localStorage.getItem("defaultWeatherLocation");
+};
+
+export const getWetherFromCoords = async (locationObj) => {
+  const lat = locationObj.getLat();
+  const lon = locationObj.getLon();
+  const units = locationObj.getUnit();
+  const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=${units}&appid=${WEATHER_API_KEY}`;
+  try{
+    const weatherStream = await fetch(url);
+    const weatherJson = await weatherStream.json();
+    return weatherJson;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getCoordsFormApi = async (entryText, units) => {
+  const regex = /^\d+$/g;
+  const flag = regex.test(entryText) ? "zip" : "q";
+  const url = `https://api.openweathermap.org/data/2.5/weather?${flag}=${entryText}&units=${units}&appid=${WEATHER_API_KEY}`;
+  const encodedUrl = encodeURI(url);
+  try {
+    const dataStream = await fetch(encodedUrl);
+    const jsonData = await dataStream.json();
+    return jsonData;
+  } catch (err) {
+    consol.log(err.stack);
+  }
 };
 
 export const cleanText = (text) => {

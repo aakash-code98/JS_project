@@ -9,12 +9,13 @@ import {
 import {
   setLocationObject,
   getHomeLocation,
+  getWetherFromCoords,
+  getCoordsFormApi,
   cleanText,
 } from "./dataFunction.js";
 
 const currentLoc = new CurrentLocation();
 const initApp = () => {
-  // add listeners
   const geoButton = document.getElementById("getLocation");
   geoButton.addEventListener("click", getGeoWeather);
   const homeButton = document.getElementById("home");
@@ -25,11 +26,11 @@ const initApp = () => {
   unitButton.addEventListener("click", setUnitPref);
   const refreshButton = document.getElementById("refresh");
   refreshButton.addEventListener("click", refreshWeather);
-  const locationEntry = document.getElementById("searchBar__location");
+  const locationEntry = document.getElementById("searchBar__form");
   locationEntry.addEventListener("submit", submitNewLocation);
-  // set up
+
   setPlaceholderText();
-  // load weather
+
   loadWeather();
 };
 
@@ -132,20 +133,27 @@ const submitNewLocation = async (e) => {
   const locationIcon = document.querySelector(".fa-magnifying-glass");
   addSpinner(locationIcon);
   const coordsData = await getCoordsFormApi(entryText, currentLoc.getUnit());
-  if (coordsData.cod === 200) {
-    //work with api data
-    //success
-    const myCoordsObj = {};
-    setLocationObject(currentLoc, myCoordsObj);
-    updateDataAndDisplay(currentLoc);
+  if (coordsData) {
+    if (coordsData.cod === 200) {
+      const myCoordsObj = {
+        lat: coordsData.coord.lat,
+        lon: coordsData.coord.lon,
+        name: coordsData.sys.country
+          ? `${coordsData.name}, ${coordsData.sys.country}`
+          : coordsData.name,
+      };
+      setLocationObject(currentLoc, myCoordsObj);
+      updateDataAndDisplay(currentLoc);
+    } else {
+      displayApiError(coordsData);
+    }
   } else {
-    displayApiError(coordsData);
+    displayError("Connection Error.", "Connection Error.");
   }
 };
 
-
 const updateDataAndDisplay = async (locationObj) => {
-  console.log(locationObj);
-  // const weatherJson = await getWetherFromCoords(locationObj);
-  // if(weatherJson) updaterDisplay(weatherJson, locationObj);
+  const weatherJson = await getWetherFromCoords(locationObj);
+  console.log(weatherJson);
+  // if (weatherJson) updaterDisplay(weatherJson, locationObj);
 };
